@@ -12,7 +12,7 @@ All-optical Networks with Particle Swarm Optimization
 ```
 sudo apt-get install python3 python3-numpy python3-termcolor
 ```
-
+or
 ```
 sudo apt-get install python3 python3-pip
 sudo -H pip3 install --upgrade pip
