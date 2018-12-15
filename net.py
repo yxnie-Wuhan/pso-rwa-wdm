@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# vim: set fileencoding=utf-8
 #
 # Routing and Wavelength Assignment in All-Optical, Wavelength-Multiplexed 
 # Networks with Static Traffic using Particle Swarm Optimization
@@ -12,20 +14,59 @@
 # Cassio Batista - cassio.batista.13@gmail.com
 # Belém, Brazil
 
-import config
 import numpy as np
 
-class Network:
-	def __init__(self):
-		super(Network, self).__init__()
-		self.nsf_adj  = np.zeros(dtype=np.uint8,
-					shape=(config.NSF_NUM_NODES, config.NSF_NUM_NODES))
-		self.nsf_wave = np.zeros(dtype=np.uint8,
-					shape=(config.NSF_NUM_NODES, config.NSF_NUM_NODES, config.NSF_NUM_CHANNELS))
-		self.nsf_time = np.zeros(dtype=np.float64,
-					shape=(config.NSF_NUM_NODES, config.NSF_NUM_NODES, config.NSF_NUM_CHANNELS))
-		# define links or edges as node index pairs 
-		self.nsf_links = [\
+class NationalScienceFoundation:
+	def __init__(self, num_ch):
+		super(NationalScienceFoundation, self).__init__()
+		self.num_channels = num_ch
+		self.num_nodes    = 14
+		self.adj_mtx      = None
+		self.wave_mtx     = None
+		self.time_mtx     = None
+
+		links = self.get_edges()
+
+		# init adjacency matrix
+		dimension = (self.num_nodes, self.num_nodes)
+		self.__nsf_adj = np.zeros(shape=dimension, dtype=np.uint8)
+		node_adjacency = 1
+		for link in links:
+			self.__nsf_adj[link[0]][link[1]] = node_adjacency
+			self.__nsf_adj[link[1]][link[0]] = node_adjacency
+
+		# init wavelength availability matrix
+		dimension = (self.num_nodes, self.num_nodes, self.num_channels)
+		self.__nsf_wave = np.zeros(shape=dimension, dtype=np.uint8)
+		for link in links:
+			for w in range(self.num_channels):
+				wave_availability = np.random.choice((0,1))
+				self.__nsf_wave[link[0]][link[1]][w] = wave_availability
+				self.__nsf_wave[link[1]][link[0]][w] = wave_availability
+
+		# init traffic matrix
+		dimension = (self.num_nodes, self.num_nodes, self.num_channels)
+		self.__nsf_time = np.zeros(shape=dimension, dtype=np.float64)
+		for link in links:
+			for w in range(self.num_channels):
+				random_htime = np.random.rand()
+				self.__nsf_time[link[0]][link[1]][w] = random_htime
+				self.__nsf_time[link[1]][link[0]][w] = random_htime
+
+	def reset_net(self):
+		self.adj_mtx  = self.__nsf_adj.copy()
+		self.wave_mtx = self.__nsf_wave.copy()
+		self.time_mtx = self.__nsf_time.copy()
+
+	def get_num_nodes(self):
+		return self.num_nodes
+
+	def get_num_channels(self):
+		return self.num_channels
+
+	# define links or edges as node index pairs 
+	def get_edges(self):
+		return [\
 			(0,1), (0,2), (0,5),  # 0
 			(1,2), (1,3),         # 1
 			(2,8),                # 2
@@ -39,25 +80,3 @@ class Network:
 			(10,11), (10,12),     # 10
 			(11,13)               # 11
 		]
-
-	def generate(self):
-		for link in self.nsf_links:
-			self.nsf_adj[link[0]][link[1]] = 1
-			self.nsf_adj[link[1]][link[0]] = self.nsf_adj[link[0]][link[1]] 
-
-		for i in range(0, config.NSF_NUM_NODES):
-			for j in range(i+1, config.NSF_NUM_NODES):
-				if self.nsf_adj[i][j]:
-					for w in range(config.NSF_NUM_CHANNELS):
-						self.nsf_wave[i][j][w] = np.random.choice((0,1))
-						self.nsf_wave[j][i][w] = self.nsf_wave[i][j][w]
-
-		for i in range(0, config.NSF_NUM_NODES):
-			for j in range(i+1, config.NSF_NUM_NODES):
-				if self.nsf_adj[i][j]:
-					for w in range(config.NSF_NUM_CHANNELS):
-						if self.nsf_wave[i][j][w]:
-							self.nsf_time[i][j][w] = np.random.rand()
-							self.nsf_time[j][i][w] = self.nsf_time[i][j][w]
-
-		return self.nsf_wave, self.nsf_adj, self.nsf_time, self.nsf_links
