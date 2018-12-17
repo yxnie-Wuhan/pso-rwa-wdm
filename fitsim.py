@@ -18,9 +18,7 @@ alpha = [4.0, 0.5, 1.0, 0.0375]
 
 colors  = ['r', 'g', 'b', 'k', 'm', 'y']
 markers = ['o', 's', '^', '<', 'v', '>']
-lnstyle = ['-', '--', '-', '--', '--', '--']
 mksize  = [ 8,  12,   8,   12,   6,  2 ]
-mkfccol = ['r', 'none', 'b', 'none', 'c', 'none', 'y']
 offset  = 0.125
 
 custom_lines = [ \
@@ -86,14 +84,6 @@ p.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
 p.set_xticks(np.arange(0,6,1)+2*offset+offset/2)
 p.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
 
-#l1 = p.legend(custom_lines, 
-#			['%s hops' % h for h in ['one','two','three','four','five','six']],
-#			loc=3, bbox_to_anchor=(1.015,0.75))
-#p.legend(custom_markers, 
-#			['%s $\lambda$ free' % w for w in ['one','two','three','four','five']],
-#			loc=3, bbox_to_anchor=(1.009,0.54))
-#plt.gca().add_artist(l1)
-
 # ---------------------------------------------------------------------------
 plt.subplots_adjust(left = 0.06, right = 0.975, bottom = 0.05, top = 0.95)
 
@@ -105,26 +95,17 @@ for i in range(len(hop)):
 					marker=markers[j], markersize=5, markerfacecolor=colors[i])
 	x += offset
 q.grid()
-#q.xaxis.grid(False)
 q.set_yticks(np.arange(1.6, 9.2, 0.2))
-q.set_yticklabels('')
-q.set_ylim([1.6, 9.0])
 q.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
-#q.set_xticks(np.arange(0,6,1)+2*offset+offset/2)
 q.set_xticks(np.arange(6))
 q.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
-
-#l2 = q.legend(custom_lines, ['%d hops' % h for h in range(1,7)],
-#			loc=2, bbox_to_anchor=(0.01,0.96))
-#q.legend(custom_markers, ['%d $\lambda$ free' % w for w in range(1,6)],
-#			loc=1, bbox_to_anchor=(0.25,0.96))
-plt.subplots_adjust(left = 0.06, right = 0.975, bottom = 0.08, top = 0.95)
-#plt.gca().add_artist(l2)
+q.yaxis.tick_right()
+q.set_yticks(np.arange(1.6, 9.2, 0.2))
+q.set_ylim([1.6, 9.0])
 
 q.legend(eita,
 			['%d hops, $w=%d$ $\lambda$ free' % (h,w) for h in range(1,7) for w in range(1,6)],
-			loc=4, bbox_to_anchor=(0.014,0.10))
-			#loc=3, bbox_to_anchor=(0.958,0.10))
+			loc=4, bbox_to_anchor=(0.037,0.20))
 
-
+plt.subplots_adjust(left=0.050, right=0.970, bottom=0.075, top=0.95, wspace=0.18)
 plt.show()
