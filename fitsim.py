@@ -58,7 +58,7 @@ for h in hop:
 # -------------------------------------------------------------------
 # define first plot parameters
 x = np.arange(6, dtype=np.float16)
-p = plt.subplot(121)
+p = plt.subplot(111)
 #p.tick_params(
 #	axis='x',          # changes apply to the x-axis
 #	which='both',      # both major and minor ticks are affected
@@ -78,34 +78,38 @@ for i in range(len(hop)):
 p.grid()
 p.xaxis.grid(False)
 p.set_yticks(np.arange(1.6, 9.2, 0.2))
+p.set_yticklabels(['%.1f' % tick for tick in np.arange(1.6, 9.2, 0.2)], fontsize=14)
 p.set_ylim([1.6, 9.0])
-p.set_ylabel(FUNC, fontsize=14)
-p.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
+p.set_ylabel(FUNC, fontsize=21)
+p.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=22)
 p.set_xticks(np.arange(0,6,1)+2*offset+offset/2)
-p.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
-
-# ---------------------------------------------------------------------------
-plt.subplots_adjust(left = 0.06, right = 0.975, bottom = 0.05, top = 0.95)
-
-x = np.arange(6, dtype=np.float16)
-q = plt.subplot(122)
-for i in range(len(hop)):
-	for j in range(1,len(ava)):
-		q.plot(myarr[i][j], color=colors[i], linestyle='-', linewidth=0.8, 
-					marker=markers[j], markersize=5, markerfacecolor=colors[i])
-	x += offset
-q.grid()
-q.set_yticks(np.arange(1.6, 9.2, 0.2))
-q.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
-q.set_xticks(np.arange(6))
-q.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
-q.yaxis.tick_right()
-q.set_yticks(np.arange(1.6, 9.2, 0.2))
-q.set_ylim([1.6, 9.0])
-
-q.legend(eita,
+p.set_xticklabels(['$\lambda=%d$' % w for w in range(6)], fontsize=18)
+p.legend(eita,
 			['%d hops, $w=%d$ $\lambda$ free' % (h,w) for h in range(1,7) for w in range(1,6)],
-			loc=4, bbox_to_anchor=(0.037,0.20))
+			loc=3, bbox_to_anchor=(0.960,0.05), fontsize=12)
 
-plt.subplots_adjust(left=0.050, right=0.970, bottom=0.075, top=0.95, wspace=0.18)
+## ---------------------------------------------------------------------------
+#plt.subplots_adjust(left = 0.06, right = 0.975, bottom = 0.05, top = 0.95)
+#
+#x = np.arange(6, dtype=np.float16)
+#q = plt.subplot(122)
+#for i in range(len(hop)):
+#	for j in range(1,len(ava)):
+#		q.plot(myarr[i][j], color=colors[i], linestyle='-', linewidth=0.8, 
+#					marker=markers[j], markersize=5, markerfacecolor=colors[i])
+#	x += offset
+#q.grid()
+#q.set_yticks(np.arange(1.6, 9.2, 0.2))
+#q.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
+#q.set_xticks(np.arange(6))
+#q.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
+#q.yaxis.tick_right()
+#q.set_yticks(np.arange(1.6, 9.2, 0.2))
+#q.set_ylim([1.6, 9.0])
+#
+#q.legend(eita,
+#			['%d hops, $w=%d$ $\lambda$ free' % (h,w) for h in range(1,7) for w in range(1,6)],
+#			loc=4, bbox_to_anchor=(0.037,0.20))
+#
+plt.subplots_adjust(left=0.050, right=0.905, bottom=0.075, top=0.95, wspace=0.18)
 plt.show()
