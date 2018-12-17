@@ -5,9 +5,9 @@ import numpy as np
 
 DEGUB = False
 
-FUNC = '$c = \left(\\alpha_0 * \\frac{1}{\lambda+\\alpha_1}\\right) + ' +\
-			'\left(\\alpha_2 * hops\\right) + ' +\
-			'\left(\\alpha_3 * \min{\lambda} index\\right)$'
+FUNC = '$C = \min\left\{\\alpha_0 * \left(w_{free}+\\alpha_1\\right)^{-1} + ' +\
+			'\\alpha_2 * hops + ' +\
+			'\\alpha_3 * \min\left(\lambda_{index}\\right)\\right\}$'
 
 
 hop = [1, 2, 3, 4, 5, 6]
@@ -86,10 +86,6 @@ p.set_xlabel('Minimum free-wavelength ($\lambda$) index', fontsize=14)
 p.set_xticks(np.arange(0,6,1)+2*offset+offset/2)
 p.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
 
-p.legend(eita,
-			['%d hops, %d $\lambda$ free' % (h,w) for h in range(1,7) for w in range(1,6)],
-			loc=3, bbox_to_anchor=(0.975,0.10))
-
 #l1 = p.legend(custom_lines, 
 #			['%s hops' % h for h in ['one','two','three','four','five','six']],
 #			loc=3, bbox_to_anchor=(1.015,0.75))
@@ -124,5 +120,11 @@ q.set_xticklabels(['$\lambda=%d$' % w for w in range(6)])
 #			loc=1, bbox_to_anchor=(0.25,0.96))
 plt.subplots_adjust(left = 0.06, right = 0.975, bottom = 0.08, top = 0.95)
 #plt.gca().add_artist(l2)
+
+q.legend(eita,
+			['%d hops, $w=%d$ $\lambda$ free' % (h,w) for h in range(1,7) for w in range(1,6)],
+			loc=4, bbox_to_anchor=(0.014,0.10))
+			#loc=3, bbox_to_anchor=(0.958,0.10))
+
 
 plt.show()
