@@ -19,16 +19,20 @@ import numpy as np
 class Particle:
 	def __init__(self):
 		super(Particle, self).__init__()
-		self.__components = None
-		self.__fit        = None
-		self.__p_best     = None
-		self.__g_best     = None
+		# init pso parameters
+		self.__route          = None         # genes-like
+		self.__fitness        = float('nan') # fitness
+		self.__p_best         = None         # 
+		self.__g_best         = None         # 
 
-	def make(self):
+		self.__num_waves_free = float('nan')
+		self.__num_hops       = float('nan')
+
+	def create(self, s_node, d_node, allels):
 		count = 0
 		# 1. start from source node
-		current_router = start_router
-		chromosome = [allels.pop(allels.index(current_router))]
+		current_router = s_node
+		particle = [allels.pop(allels.index(current_router))]
 		while len(allels):
 			# 2. randomly choose, with equal probability, one of the nodes that
 			# is SURELY connected to the current node to be the next in path
@@ -39,10 +43,10 @@ class Particle:
 				# 3. if the chosen node hasn't been visited before, mark it as the
 				# next in the path (gene). Otherwise find another node
 				current_router = next_router
-				chromosome.append(allels.pop(allels.index(current_router)))
+				particle.append(allels.pop(allels.index(current_router)))
 
 				# 6. do this until the destination node is found
-				if current_router == end_router:
+				if current_router == d_node:
 					break
 
 				count = 0
@@ -50,16 +54,39 @@ class Particle:
 				# max trials to find a valid path: average of 100 chances per gene
 				count += 1
 				if count > 100:
-					chromosome = False
+					particle = False
 					break
 
-		if chromosome and len(chromosome) > info.NSF_NUM_NODES:
-			chromosome = False
+		if particle and len(particle) > self.__net.get_num_nodes():
+			particle = False
 
-		return chromosome
+		return particle
+
+	def update_fitvalue(self, value):
+		self.__fitness = value
 
 	def get_fit(self):
-		return self.fit
+		return self.__fit
 
 	def get_components(self):
-		return self.components
+		return self.__route
+
+	def get_num_wavs_free(self):
+		return self.__num_waves_free
+
+	def get_num_hops(self):
+		return self.__num_hops
+
+	def get_min_free_wav_index(self)
+		for w in self.__net.get_num_channels():
+			for i in range(self.get_num_hops()-1):
+				curr_node = self.get_components()[i]
+				next_node = self.get_components()[i+1]
+				if self.__net.wave_mtx[curr_node][next_node][w]
+					min_idx = w
+				else:
+					min_idx = float('inf') # FIXME
+					break
+			if min_idx < float('inf'):
+				break
+		return min_idx
