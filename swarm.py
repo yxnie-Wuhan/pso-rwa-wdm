@@ -39,12 +39,6 @@ class Swarm:
 		self.__swarm.pop(-1)
 		self.update_size_swarm(-1)
 
-	# TODO FIXME
-	def evaluate(self):
-		for particle in self.get_swarm():
-			particle.calc_fit()
-			c = alpha[0]*( 1 / (a+alpha[1]) ) + alpha[2]*h + alpha[3]*f
-
 	def update_size_swarm(self, num_parts):
 		self.__size_swarm += num_parts
 
