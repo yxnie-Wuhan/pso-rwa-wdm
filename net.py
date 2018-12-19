@@ -17,8 +17,10 @@
 import numpy as np
 
 class NationalScienceFoundation:
-	def __init__(self, num_ch):
+	def __init__(self, src_node, dst_node, num_ch):
 		super(NationalScienceFoundation, self).__init__()
+		self.source       = src_node
+		self.destination  = dst_node
 		self.num_channels = num_ch
 		self.num_nodes    = 14
 		self.adj_mtx      = None
