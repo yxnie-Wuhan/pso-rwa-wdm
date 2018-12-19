@@ -29,7 +29,10 @@ class RoutingAndWavelengthAssignment:
 
 	def run():
 		# init networks
-		self.nsf = NationalScienceFoundation(config.NSF_NUM_CHANNELS)
+		self.nsf = NationalScienceFoundation(
+					config.NSF_SOURCE_NODE, 
+					config.NSF_DEST_NODE, 
+					config.NSF_NUM_CHANNELS)
 		self.nsf.reset_net()
 
 		blocked = []
@@ -54,7 +57,14 @@ class RoutingAndWavelengthAssignment:
 				print()
 
 		# init PSO
-		self.pso = ParticleSwarmOptimization()
+		self.pso = ParticleSwarmOptimization(
+					config.PSO_SIZE_SWARM,
+					config.PSO_INIT_W,
+					config.PSO_INIT_C1,
+					config.PSO_INIT_C2,
+					config.PSO_INIT_C3,
+					config.PSO_ALPHA,
+					config.PSO_ITERS_TO_CONV)
 
 		# increment load 
 		for load in range(config.SIM_MIN_LOAD, config.SIM_MIN_LOAD):
@@ -73,12 +83,12 @@ class RoutingAndWavelengthAssignment:
 				for link in self.nsf.get_edges():
 					i, j = link
 					for w in xrange(self.nsf.get_num_channels()):
-						if  self.nsf.time_mtx[i][j][w]  > until_next:
+						if self.nsf.time_mtx[i][j][w] > until_next:
 							self.nsf.time_mtx[i][j][w] -= until_next
 							self.nsf.time_mtx[j][i][w] -= until_next
 						else:
-							self.time_mtx[i][j][w] = 0
-							self.time_mtx[j][i][w] = 0
+							self.nsf.time_mtx[i][j][w] = 0
+							self.nsf.time_mtx[j][i][w] = 0
 							if not self.nsf.wave_mtx[i][j][w]:
 								self.nsf.wave_mtx[i][j][w] = 1 # free channel
 								self.nsf.wave_mtx[j][i][w] = 1
@@ -91,7 +101,7 @@ class RoutingAndWavelengthAssignment:
 		with open('block.txt', 'a') as f:
 			f.write(blocked)
 
-		# plot
+		# plot TODO
 
 if __name__=='__main__':
 	rwa = RoutingAndWavelengthAssignment()
