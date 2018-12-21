@@ -37,13 +37,13 @@ NSF_NUM_CHANNELS  = 4      # total number of wavelengths available
 ##########
 PSO_SIZE_SWARM     = 30    # size of the swarm
 
-PSO_INIT_C1        = 2.0   # individual (pbest, self)
-PSO_INIT_C2        = 2.0   # local      (lbest, social neighbourhood)
-PSO_INIT_C3        = 2.0   # social     (gbest, global)
-PSO_INIT_W         = 1.0   # inertia factor
+PSO_INIT_C1        = 0.1   # individual (self)
+PSO_INIT_C2        = 0.1   # local      (lbest, social neighbourhood)
+PSO_INIT_C3        = 0.8   # social     (gbest, global swarm)
+assert(PSO_INIT_C1 + PSO_INIT_C2 + PSO_INIT_C3 == 1.0, 'puta que pariu')
 
 PSO_ALPHA          = [4.0, 0.5, 1.0, 0.0375] # fitness function parameters
 
-PSO_ITERS_TO_CONV   = 500   # min number of generations
+PSO_ITERS_TO_CONV  = 500   # min number of iterations of convergence
 
 ### EOF ###
