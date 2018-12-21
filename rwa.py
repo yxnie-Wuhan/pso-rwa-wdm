@@ -59,7 +59,6 @@ class RoutingAndWavelengthAssignment:
 		# init PSO
 		self.pso = ParticleSwarmOptimization(
 					config.PSO_SIZE_SWARM,
-					config.PSO_INIT_W,
 					config.PSO_INIT_C1,
 					config.PSO_INIT_C2,
 					config.PSO_INIT_C3,
@@ -82,13 +81,13 @@ class RoutingAndWavelengthAssignment:
 				# update networks' traffic matrix
 				for link in self.nsf.get_edges():
 					i, j = link
-					for w in xrange(self.nsf.get_num_channels()):
+					for w in range(self.nsf.get_num_channels()):
 						if self.nsf.time_mtx[i][j][w] > until_next:
 							self.nsf.time_mtx[i][j][w] -= until_next
 							self.nsf.time_mtx[j][i][w] -= until_next
 						else:
-							self.nsf.time_mtx[i][j][w] = 0
-							self.nsf.time_mtx[j][i][w] = 0
+							self.nsf.time_mtx[i][j][w] = 0.0
+							self.nsf.time_mtx[j][i][w] = 0.0
 							if not self.nsf.wave_mtx[i][j][w]:
 								self.nsf.wave_mtx[i][j][w] = 1 # free channel
 								self.nsf.wave_mtx[j][i][w] = 1
