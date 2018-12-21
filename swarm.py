@@ -45,6 +45,9 @@ class Swarm:
 	def sort(self):
 		self.__swarm.sort(key=lambda x:x.get_fit(), reverse=False)
 
+	def get_swarm(self):
+		return self.__swarm
+
 	def get_size_swarm(self):
 		return self.__size_swarm
 
